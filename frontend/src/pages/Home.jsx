@@ -26,8 +26,8 @@ const Home = () => {
   }, [filters]);
 
   return (
-    <div calssName="home">
-      <h1>All ours Cars</h1>
+    <div className="home">
+      <header><h1>All ours Cars</h1></header>
       <Filters setFilters={setFilters} />
       <CarList cars={cars} />
     </div>

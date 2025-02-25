@@ -33,7 +33,7 @@ const Filters = ({ setFilters }) => {
         <option value="7">7</option>
       </select>
 
-      <label>Price Range: {priceRange}</label>
+      <label>Max Price: {priceRange}</label>
       <input
         type="range"
         min="0"
