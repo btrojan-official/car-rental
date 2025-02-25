@@ -3,10 +3,9 @@ const mysql = require('mysql2');
 const app = express();
 const port = 3000;
 
-// Database connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Change if needed
+    user: 'root',
     password: '',
     database: 'car_rental_db'
 });
