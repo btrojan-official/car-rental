@@ -65,10 +65,15 @@ app.get('/reservations', (req, res) => {
     });
 });
 
-app.post('/register', async (req, res) => {
-    const { name, surname, email, phone_number, country_id, password, password_repeat } = req.body;
+app.post('/register', (req, res) => {
+    const name = req.body.name;
+    const surname = req.body.surname;
+    const email = req.body.email;
+    const phone_number = req.body.phone_number;
+    const country_id = req.body.country_id;
+    const password = req.body.password;
+    const password_repeat = req.body.password_repeat;
 
-    // Basic validation
     if (!name || !surname || !email || !phone_number || !country_id || !password || !password_repeat) {
         return res.status(400).json({ error: 'All fields are required' });
     }
@@ -78,9 +83,6 @@ app.post('/register', async (req, res) => {
     }
 
     try {
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         // Log user data (excluding password)
         console.log({
             name,
@@ -88,7 +90,7 @@ app.post('/register', async (req, res) => {
             email,
             phone_number,
             country_id,
-            hashedPassword,
+            password,
         });
 
         res.status(201).json({ message: 'User registered successfully' });
