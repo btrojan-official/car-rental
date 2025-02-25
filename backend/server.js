@@ -25,7 +25,7 @@ db.connect(err => {
 app.get('/cars', (req, res) => {
     const query = `
         SELECT c.id, cm.model_name, cmk.make_name, c.number_of_seats, c.gearbox, 
-               c.luggage_capacity, c.milage_limit, c.class, c.status, c.price_per_day, c.number_plate
+               c.luggage_capacity, c.milage_limit, c.class, c.status, c.price_per_day
         FROM cars c
         JOIN car_model cm ON c.model_id = cm.id
         JOIN cars_makes cmk ON cm.car_make_id = cmk.id`;
@@ -63,6 +63,38 @@ app.get('/reservations', (req, res) => {
         }
         res.json(results);
     });
+});
+
+app.post('/register', async (req, res) => {
+    const { name, surname, email, phone_number, country_id, password, password_repeat } = req.body;
+
+    // Basic validation
+    if (!name || !surname || !email || !phone_number || !country_id || !password || !password_repeat) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    if (password !== password_repeat) {
+        return res.status(400).json({ error: 'Passwords do not match' });
+    }
+
+    try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Log user data (excluding password)
+        console.log({
+            name,
+            surname,
+            email,
+            phone_number,
+            country_id,
+            hashedPassword,
+        });
+
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 app.listen(port, () => {
