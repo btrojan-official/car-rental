@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './../stylesheat/Filters.css';
 
 const Filters = ({ setFilters }) => {
+  const [priceRange, setPriceRange] = useState(0);
+
   const handleFilterChange = (e) => {
+    const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
+    if (name === 'priceRange') {
+      setPriceRange(value);
+    }
   };
-
   return (
     <div className="filters">
       <label>Make:</label>
@@ -27,12 +33,13 @@ const Filters = ({ setFilters }) => {
         <option value="7">7</option>
       </select>
 
-      <label>Price Range:</label>
+      <label>Max Price: {priceRange}</label>
       <input
         type="range"
         min="0"
         max="100"
         name="priceRange"
+        value={priceRange}
         onChange={handleFilterChange}
       />
     </div>

@@ -1,0 +1,32 @@
+body {
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+  
+  .home h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-left: 40px;
+    
+  }
+  header {
+    background-image: url("./../assets/BanerImg.jpg");
+    background-position: center; /* wyśrodkowanie obrazu */
+     background-size: cover;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+  .filters {
+    margin-bottom: 20px;
+  }
