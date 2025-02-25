@@ -1,7 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors');
+
 const app = express();
 const port = 3000;
+app.use(cors());
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -50,11 +53,8 @@ app.get('/users', (req, res) => {
 // List all reservations
 app.get('/reservations', (req, res) => {
     const query = `
-        SELECT r.id, r.start_date, r.end_date, r.return_date, r.status, r.reservation_price, r.paid_price,
-               u.name AS user_name, u.surname AS user_surname, c.number_plate
-        FROM reservations r
-        JOIN users u ON r.user_id = u.id
-        JOIN cars c ON r.car_id = c.id`;
+        SELECT r.id, r.start_date, r.end_date, r.return_date, r.status, r.reservation_price, car_id
+        FROM reservations r;`
     
     db.query(query, (err, results) => {
         if (err) {
