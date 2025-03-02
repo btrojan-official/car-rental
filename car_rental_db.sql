@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2025 at 11:51 AM
+-- Generation Time: Mar 02, 2025 at 08:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -155,10 +155,12 @@ CREATE TABLE `users` (
   `id` varchar(36) NOT NULL,
   `name` varchar(30) NOT NULL,
   `surname` varchar(50) NOT NULL,
-  `password` varchar(36) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `country_id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `phone_number` varchar(20) NOT NULL
+  `phone_number` varchar(20) NOT NULL,
+  `session_creation_timestamp` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `session_id` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -204,6 +206,7 @@ ALTER TABLE `reservations`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `session_id` (`session_id`),
   ADD KEY `FK_3` (`country_id`);
 
 --
@@ -256,6 +259,16 @@ ALTER TABLE `reservations`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `FK_3` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `expire_sessions` ON SCHEDULE EVERY 1 HOUR STARTS '2025-03-02 08:25:45' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE users
+SET session_id = NULL, session_creation_timestamp = NULL
+WHERE session_creation_timestamp < NOW() - INTERVAL 3 HOUR$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
